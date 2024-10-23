@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <Platforms>AnyCPU</Platforms>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Description>A validation module checking for Gmail account existence</Description>
+        <Version Condition="'$(BUILD_VERSION)' == ''">2.1.0</Version>
+        <Version Condition="'$(BUILD_VERSION)' != ''">$(BUILD_VERSION)</Version>
+        <AssemblyName>Soenneker.Validators.Gmail.Exists</AssemblyName>
+        <PackageId>Soenneker.Validators.Gmail.Exists</PackageId>
+        <PackageTags>validators gmail exists google validator email gmailexistsvalidator csharp dotnet c# .net</PackageTags>
+        <Copyright>Copyright © 2024 Jake Soenneker</Copyright>
+        <Authors>Jake Soenneker</Authors>
+        <Company>https://soenneker.com</Company>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <IsPackable>true</IsPackable>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/soenneker/soenneker.validators.gmail.exists</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/soenneker/soenneker.validators.gmail.exists</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryBranch>main</RepositoryBranch>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <LangVersion>latest</LangVersion>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>icon.png</PackageIcon>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="..\CONTRIBUTING.md" Link="CONTRIBUTING.md" />
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
+        <None Include="..\LICENSE" Pack="true" PackagePath="\" />
+        <None Include="..\icon.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Soenneker.Extensions.Configuration" Version="2.1.463" />
+        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="2.1.928" />
+        <PackageReference Include="Soenneker.Utils.RateLimiting.Factory" Version="2.1.6" />
+        <PackageReference Include="Soenneker.Validators.Validator" Version="2.1.352" />
+    </ItemGroup>
+</Project>
