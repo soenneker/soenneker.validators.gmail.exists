@@ -10,7 +10,7 @@ namespace Soenneker.Validators.Gmail.Exists.Abstract;
 /// </summary>
 public interface IGmailExistsValidator : IValidator, IDisposable, IAsyncDisposable
 {
-    ValueTask<bool> EmailExists(string email, CancellationToken cancellationToken = default);
+    ValueTask<bool?> EmailExists(string email, CancellationToken cancellationToken = default);
 
-    ValueTask<bool> EmailExistsWithoutLimit(string email, CancellationToken cancellationToken = default);
+    ValueTask<bool?> EmailExistsWithoutLimit(string email, CancellationToken cancellationToken = default);
 }

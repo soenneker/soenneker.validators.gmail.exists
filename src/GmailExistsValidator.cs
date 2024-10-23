@@ -41,16 +41,16 @@ public class GmailExistsValidator : Validator.Validator, IGmailExistsValidator
         }
     }
 
-    public async ValueTask<bool> EmailExists(string email, CancellationToken cancellationToken = default)
+    public async ValueTask<bool?> EmailExists(string email, CancellationToken cancellationToken = default)
     {
         RateLimitingExecutor rateLimiter = await _rateLimitingFactory.Get(nameof(GmailExistsValidator), _interval, cancellationToken).NoSync();
 
-        bool result = await rateLimiter.Execute(ct => EmailExistsWithoutLimit(email, ct), cancellationToken).NoSync();
+        bool? result = await rateLimiter.Execute(ct => EmailExistsWithoutLimit(email, ct), cancellationToken).NoSync();
 
         return result;
     }
 
-    public async ValueTask<bool> EmailExistsWithoutLimit(string email, CancellationToken cancellationToken = default)
+    public async ValueTask<bool?> EmailExistsWithoutLimit(string email, CancellationToken cancellationToken = default)
     {
         Logger.LogDebug("Checking if Gmail account ({email}) exists...", email);
 
@@ -79,6 +79,7 @@ public class GmailExistsValidator : Validator.Validator, IGmailExistsValidator
         catch (HttpRequestException e)
         {
             Logger.LogWarning(e, "An error occurred with {email}. {message}", email, e.Message);
+            return null;
         }
 
         Logger.LogDebug("Gmail account ({email}) does NOT exist", email);
