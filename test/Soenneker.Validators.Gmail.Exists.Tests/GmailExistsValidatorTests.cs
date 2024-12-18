@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Soenneker.Validators.Gmail.Exists.Abstract;
 using Soenneker.Tests.FixturedUnit;
 using Xunit;
-using Xunit.Abstractions;
+
 
 namespace Soenneker.Validators.Gmail.Exists.Tests;
 
