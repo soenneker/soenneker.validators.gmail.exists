@@ -27,8 +27,9 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Soenneker.Utils.Test" Version="3.0.253" />
-        <PackageReference Include="Soenneker.Tests.FixturedUnit" Version="3.0.1358" />
-    <PackageReference Include="xUnit.v3" Version="1.0.0" /></ItemGroup>
+        <PackageReference Include="Soenneker.Tests.FixturedUnit" Version="3.0.1354" />
+        <PackageReference Include="xUnit.v3" Version="1.0.0" />
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\Soenneker.Validators.Gmail.Exists.csproj" />
