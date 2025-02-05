@@ -45,9 +45,7 @@ public class GmailExistsValidator : Validator.Validator, IGmailExistsValidator
     {
         RateLimitingExecutor rateLimiter = await _rateLimitingFactory.Get(nameof(GmailExistsValidator), _interval, cancellationToken).NoSync();
 
-        bool? result = await rateLimiter.Execute(ct => EmailExistsWithoutLimit(email, ct), cancellationToken).NoSync();
-
-        return result;
+        return await rateLimiter.Execute(ct => EmailExistsWithoutLimit(email, ct), cancellationToken).NoSync();
     }
 
     public async ValueTask<bool?> EmailExistsWithoutLimit(string email, CancellationToken cancellationToken = default)
