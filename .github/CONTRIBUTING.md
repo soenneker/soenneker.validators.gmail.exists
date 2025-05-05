@@ -1,4 +1,4 @@
-# Contributing to Soenneker.Validators.Gmail.Exists
+﻿# Contributing to Soenneker.Validators.Gmail.Exists
 
 We're excited that you're interested in contributing!
 
