@@ -86,15 +86,11 @@ public sealed class GmailExistsValidator : Validator.Validator, IGmailExistsVali
 
     public void Dispose()
     {
-        GC.SuppressFinalize(this);
-
         _httpClientCache.RemoveSync(nameof(GmailExistsValidator));
     }
 
     public ValueTask DisposeAsync()
     {
-        GC.SuppressFinalize(this);
-
         return _httpClientCache.Remove(nameof(GmailExistsValidator));
     }
 }

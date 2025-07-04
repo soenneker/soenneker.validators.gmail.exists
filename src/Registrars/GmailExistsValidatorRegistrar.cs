@@ -16,9 +16,7 @@ public static class GmailExistsValidatorRegistrar
     /// </summary>
     public static IServiceCollection AddGmailExistsValidatorAsSingleton(this IServiceCollection services)
     {
-        services.AddRateLimitingFactoryAsSingleton()
-                .AddHttpClientCacheAsSingleton()
-                .TryAddSingleton<IGmailExistsValidator, GmailExistsValidator>();
+        services.AddRateLimitingFactoryAsSingleton().AddHttpClientCacheAsSingleton().TryAddSingleton<IGmailExistsValidator, GmailExistsValidator>();
 
         return services;
     }
@@ -28,9 +26,7 @@ public static class GmailExistsValidatorRegistrar
     /// </summary>
     public static IServiceCollection AddGmailExistsValidatorAsScoped(this IServiceCollection services)
     {
-        services.AddRateLimitingFactoryAsSingleton()
-                .AddHttpClientCacheAsSingleton()
-                .TryAddScoped<IGmailExistsValidator, GmailExistsValidator>();
+        services.AddRateLimitingFactoryAsSingleton().AddHttpClientCacheAsSingleton().TryAddScoped<IGmailExistsValidator, GmailExistsValidator>();
 
         return services;
     }
