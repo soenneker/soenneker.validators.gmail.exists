@@ -1,21 +1,20 @@
 using Soenneker.Validators.Gmail.Exists.Abstract;
-using Soenneker.Tests.FixturedUnit;
-using Xunit;
+using Soenneker.Tests.HostedUnit;
 
 
 namespace Soenneker.Validators.Gmail.Exists.Tests;
 
-[Collection("Collection")]
-public class GmailExistsValidatorTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public class GmailExistsValidatorTests : HostedUnitTest
 {
     private readonly IGmailExistsValidator _util;
 
-    public GmailExistsValidatorTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public GmailExistsValidatorTests(Host host) : base(host)
     {
         _util = Resolve<IGmailExistsValidator>(true);
     }
 
-    [Fact]
+    [Test]
     public void Default()
     {
 
