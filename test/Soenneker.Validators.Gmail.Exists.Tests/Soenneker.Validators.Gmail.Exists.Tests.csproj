@@ -31,10 +31,5 @@
     <ItemGroup>
         <ProjectReference Include="..\..\src\Soenneker.Validators.Gmail.Exists\Soenneker.Validators.Gmail.Exists.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="testconfig.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
 </Project>
+
