@@ -44,9 +44,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Soenneker.Extensions.Configuration" Version="4.0.860" />
-        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="4.0.2027" />
-        <PackageReference Include="Soenneker.Utils.RateLimiting.Factory" Version="4.0.1144" />
+        <PackageReference Include="Soenneker.Extensions.Configuration" Version="4.0.861" />
+        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="4.0.2030" />
+        <PackageReference Include="Soenneker.Utils.RateLimiting.Factory" Version="4.0.1145" />
         <PackageReference Include="Soenneker.Validators.Validator" Version="4.0.734" />
     </ItemGroup>
 </Project>
