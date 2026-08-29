@@ -11,18 +11,18 @@ namespace Soenneker.Validators.Gmail.Exists.Abstract;
 public interface IGmailExistsValidator : IValidator, IDisposable, IAsyncDisposable
 {
     /// <summary>
-    /// Executes the email exists operation.
+    /// Checks whether the mailbox exists with the target email provider.
     /// </summary>
-    /// <param name="email">The email address.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task containing the result of the operation.</returns>
+    /// <param name="email">Email address to validate or query.</param>
+    /// <param name="cancellationToken">Token used to cancel the operation.</param>
+    /// <returns>true if the mailbox exists; false if it does not; null when the provider cannot determine the result.</returns>
     ValueTask<bool?> EmailExists(string email, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Executes the email exists without limit operation.
+    /// Checks whether the mailbox exists without applying the validator rate limit.
     /// </summary>
-    /// <param name="email">The email address.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task containing the result of the operation.</returns>
+    /// <param name="email">Email address to validate or query.</param>
+    /// <param name="cancellationToken">Token used to cancel the operation.</param>
+    /// <returns>true if the mailbox exists; false if it does not; null when the provider cannot determine the result.</returns>
     ValueTask<bool?> EmailExistsWithoutLimit(string email, CancellationToken cancellationToken = default);
 }

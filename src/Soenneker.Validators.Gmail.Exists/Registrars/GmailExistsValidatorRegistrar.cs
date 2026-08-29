@@ -14,6 +14,8 @@ public static class GmailExistsValidatorRegistrar
     /// <summary>
     /// Adds <see cref="IGmailExistsValidator"/> as a singleton service. <para/>
     /// </summary>
+    /// <param name="services">Service collection that receives the registration.</param>
+    /// <returns>The same service collection, so additional registrations can be chained.</returns>
     public static IServiceCollection AddGmailExistsValidatorAsSingleton(this IServiceCollection services)
     {
         services.AddRateLimitingFactoryAsSingleton().AddHttpClientCacheAsSingleton().TryAddSingleton<IGmailExistsValidator, GmailExistsValidator>();
@@ -24,6 +26,8 @@ public static class GmailExistsValidatorRegistrar
     /// <summary>
     /// Adds <see cref="IGmailExistsValidator"/> as a scoped service. <para/>
     /// </summary>
+    /// <param name="services">Service collection that receives the registration.</param>
+    /// <returns>The same service collection, so additional registrations can be chained.</returns>
     public static IServiceCollection AddGmailExistsValidatorAsScoped(this IServiceCollection services)
     {
         services.AddRateLimitingFactoryAsSingleton().AddHttpClientCacheAsSingleton().TryAddScoped<IGmailExistsValidator, GmailExistsValidator>();
