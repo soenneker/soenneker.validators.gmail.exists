@@ -15,7 +15,6 @@ using Soenneker.Validators.Gmail.Exists.Abstract;
 
 namespace Soenneker.Validators.Gmail.Exists;
 
-/// <inheritdoc cref="IGmailExistsValidator"/>
 public sealed class GmailExistsValidator : Validator.Validator, IGmailExistsValidator
 {
     private readonly IHttpClientCache _httpClientCache;
@@ -50,15 +49,16 @@ public sealed class GmailExistsValidator : Validator.Validator, IGmailExistsVali
 
     public async ValueTask<bool?> EmailExistsWithoutLimit(string email, CancellationToken cancellationToken = default)
     {
-        Logger.LogDebug("Checking if Gmail account ({email}) exists...", email);
+        Logger.LogDebug("Checking Gmail account existence using the public-calendar response heuristic");
 
-        var url = $"https://calendar.google.com/calendar/ical/{email}/public/basic.ics";
+        string escapedEmail = Uri.EscapeDataString(email);
+        var url = $"https://calendar.google.com/calendar/ical/{escapedEmail}/public/basic.ics";
 
         HttpClient client = await _httpClientCache.Get(nameof(GmailExistsValidator), cancellationToken: cancellationToken).NoSync();
 
         try
         {
-            HttpResponseMessage response = await client.GetAsync(url, cancellationToken).NoSync();
+            using HttpResponseMessage response = await client.GetAsync(url, cancellationToken).NoSync();
 
             if (response.Headers.Contains("x-frame-options"))
             {
@@ -68,7 +68,7 @@ public sealed class GmailExistsValidator : Validator.Validator, IGmailExistsVali
                 {
                     if (option.EqualsIgnoreCase("SAMEORIGIN"))
                     {
-                        Logger.LogDebug("Gmail account ({email}) exists", email);
+                        Logger.LogDebug("The Gmail public-calendar response matched the existence heuristic");
                         return true;
                     }
                 }
@@ -76,11 +76,11 @@ public sealed class GmailExistsValidator : Validator.Validator, IGmailExistsVali
         }
         catch (HttpRequestException e)
         {
-            Logger.LogWarning(e, "An error occurred with {email}. {message}", email, e.Message);
+            Logger.LogWarning(e, "The Gmail public-calendar request failed: {message}", e.Message);
             return null;
         }
 
-        Logger.LogDebug("Gmail account ({email}) does NOT exist", email);
+        Logger.LogDebug("The Gmail public-calendar response did not match the existence heuristic");
         return false;
     }
 
@@ -89,7 +89,7 @@ public sealed class GmailExistsValidator : Validator.Validator, IGmailExistsVali
     /// </summary>
     public void Dispose()
     {
-        _httpClientCache.RemoveSync(nameof(GmailExistsValidator));
+        // The cache is a shared singleton and owns the named client.
     }
 
     /// <summary>
@@ -98,6 +98,7 @@ public sealed class GmailExistsValidator : Validator.Validator, IGmailExistsVali
     /// <returns>A task that represents the asynchronous operation.</returns>
     public ValueTask DisposeAsync()
     {
-        return _httpClientCache.Remove(nameof(GmailExistsValidator));
+        // The cache is a shared singleton and owns the named client.
+        return ValueTask.CompletedTask;
     }
 }

@@ -5,7 +5,7 @@
 
 # Soenneker.Validators.Gmail.Exists
 
-A validation module checking for Gmail account existence.
+Applies a Google Calendar response-header heuristic that may indicate whether a Gmail address has an account.
 
 ## Install
 
@@ -13,33 +13,53 @@ A validation module checking for Gmail account existence.
 dotnet add package Soenneker.Validators.Gmail.Exists
 ```
 
-## Quick start
+## Registration
 
 ```csharp
 using Soenneker.Validators.Gmail.Exists.Registrars;
 using Microsoft.Extensions.DependencyInjection;
 
-var services = new ServiceCollection();
-var result = services.AddGmailExistsValidatorAsSingleton();
+services.AddGmailExistsValidatorAsSingleton();
 ```
 
-Adds `IGmailExistsValidator` as a singleton service.
+Scoped registration is also available. Both registrations reuse singleton HTTP-client-cache and rate-limiter-factory services. Disposing a scoped validator does not evict or dispose the shared named HTTP client.
 
-## What you get
+## Configure request spacing
 
-- `IGmailExistsValidator` — A validation module checking for Gmail account existence.
-- `GmailExistsValidatorRegistrar` — A validation module checking for Gmail account existence.
+```json
+{
+  "GmailExistsValidator": {
+    "IntervalMs": 3000
+  }
+}
+```
 
-## API at a glance
+The default interval is 3,000 milliseconds. `EmailExists` routes calls through a shared named rate limiter using this interval.
 
-| API | What it does | Result / important behavior |
-| --- | --- | --- |
-| `IGmailExistsValidator.EmailExists(email, cancellationToken)` | Checks whether the mailbox exists with the target email provider. | true if the mailbox exists; false if it does not; null when the provider cannot determine the result. |
-| `IGmailExistsValidator.EmailExistsWithoutLimit(email, cancellationToken)` | Checks whether the mailbox exists without applying the validator rate limit. | true if the mailbox exists; false if it does not; null when the provider cannot determine the result. |
-| `GmailExistsValidatorRegistrar.AddGmailExistsValidatorAsSingleton(services)` | Adds `IGmailExistsValidator` as a singleton service. | The same service collection, so additional registrations can be chained. |
-| `GmailExistsValidatorRegistrar.AddGmailExistsValidatorAsScoped(services)` | Adds `IGmailExistsValidator` as a scoped service. | The same service collection, so additional registrations can be chained. |
+## Check an address
 
-## Practical notes
+```csharp
+using Soenneker.Validators.Gmail.Exists.Abstract;
 
-- Cancellation stops pending work; it does not undo work that has already completed.
-- Dispose instances you own when their scope ends so held resources can be released.
+bool? result = await validator.EmailExists(
+    "person@gmail.com",
+    cancellationToken);
+```
+
+The address is escaped as one URL path component and sent to Google's public Calendar ICS endpoint. The response is considered a positive match only when an `X-Frame-Options` header value equals `SAMEORIGIN`, ignoring case.
+
+Results are:
+
+- `true`: the response contained the expected header value;
+- `false`: the request completed but the response did not contain that value;
+- `null`: `HttpClient` raised `HttpRequestException`.
+
+Cancellation propagates as `OperationCanceledException`. The method does not validate email syntax or require a Gmail domain before sending the request.
+
+`EmailExistsWithoutLimit` performs the same request without the local rate limiter. It does not bypass Google's limits and should be reserved for callers that already coordinate request pacing.
+
+## Reliability and privacy
+
+This is an undocumented response heuristic, not an account-verification API. Google can change the endpoint or headers at any time, and positive or negative results may be wrong. Do not use it as proof of mailbox ownership, as an authentication factor, or as the sole reason to accept or reject a user. Verification email remains the reliable ownership check.
+
+The queried address is disclosed to Google in the request URL. It is no longer included in this validator's logs, but it may still appear in upstream HTTP infrastructure or Google's logs. Ensure that use is compatible with your privacy requirements and provider terms.

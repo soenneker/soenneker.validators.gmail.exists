@@ -11,18 +11,18 @@ namespace Soenneker.Validators.Gmail.Exists.Abstract;
 public interface IGmailExistsValidator : IValidator, IDisposable, IAsyncDisposable
 {
     /// <summary>
-    /// Checks whether the mailbox exists with the target email provider.
+    /// Applies a Google public-calendar response-header heuristic through the shared rate limiter.
     /// </summary>
     /// <param name="email">Email address to validate or query.</param>
     /// <param name="cancellationToken">Token used to cancel the operation.</param>
-    /// <returns>true if the mailbox exists; false if it does not; null when the provider cannot determine the result.</returns>
+    /// <returns><see langword="true"/> when the response matches the heuristic, <see langword="false"/> when it does not, or <see langword="null"/> for an HTTP transport failure.</returns>
     ValueTask<bool?> EmailExists(string email, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Checks whether the mailbox exists without applying the validator rate limit.
+    /// Applies the Google public-calendar response-header heuristic without using the validator rate limiter.
     /// </summary>
     /// <param name="email">Email address to validate or query.</param>
     /// <param name="cancellationToken">Token used to cancel the operation.</param>
-    /// <returns>true if the mailbox exists; false if it does not; null when the provider cannot determine the result.</returns>
+    /// <returns><see langword="true"/> when the response matches the heuristic, <see langword="false"/> when it does not, or <see langword="null"/> for an HTTP transport failure.</returns>
     ValueTask<bool?> EmailExistsWithoutLimit(string email, CancellationToken cancellationToken = default);
 }
