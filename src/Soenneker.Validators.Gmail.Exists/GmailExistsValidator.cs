@@ -15,6 +15,7 @@ using Soenneker.Validators.Gmail.Exists.Abstract;
 
 namespace Soenneker.Validators.Gmail.Exists;
 
+/// <inheritdoc cref="IGmailExistsValidator" />
 public sealed class GmailExistsValidator : Validator.Validator, IGmailExistsValidator
 {
     private readonly IHttpClientCache _httpClientCache;
