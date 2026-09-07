@@ -59,11 +59,10 @@ public sealed class GmailExistsValidator : Validator.Validator, IGmailExistsVali
 
         try
         {
-            using HttpResponseMessage response = await client.GetAsync(url, cancellationToken).NoSync();
+            using HttpResponseMessage response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken).NoSync();
 
-            if (response.Headers.Contains("x-frame-options"))
+            if (response.Headers.TryGetValues("x-frame-options", out IEnumerable<string>? frameOptions))
             {
-                IEnumerable<string> frameOptions = response.Headers.GetValues("x-frame-options");
 
                 foreach (string option in frameOptions)
                 {
