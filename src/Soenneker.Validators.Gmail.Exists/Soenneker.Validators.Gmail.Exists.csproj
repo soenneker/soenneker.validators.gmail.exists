@@ -46,8 +46,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="4.0.2101" />
-        <PackageReference Include="Soenneker.Utils.RateLimiting.Factory" Version="4.0.1206" />
+        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="4.0.2110" />
+        <PackageReference Include="Soenneker.Utils.RateLimiting.Factory" Version="4.0.1208" />
         <PackageReference Include="Soenneker.Validators.Validator" Version="4.0.743" />
     </ItemGroup>
     <ItemGroup>
@@ -55,6 +55,6 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.12" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />
-        <PackageReference Include="Soenneker.Extensions.String" Version="4.0.775" />
+        <PackageReference Include="Soenneker.Extensions.String" Version="4.0.777" />
     </ItemGroup>
 </Project>
