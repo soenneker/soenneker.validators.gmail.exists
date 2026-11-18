@@ -22,48 +22,7 @@ permissions:
   security-events: write
 
 jobs:
-  check:
-    if: github.event_name == 'schedule'
-    runs-on: ubuntu-latest
-    permissions:
-      security-events: read
-    outputs:
-      scan: ${{ steps.history.outputs.scan }}
-    steps:
-      - name: Check latest CodeQL analysis
-        id: history
-        shell: python
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          import json
-          import os
-          import subprocess
-          from datetime import datetime, timezone
-
-          endpoint = f"repos/{os.environ['GITHUB_REPOSITORY']}/code-scanning/analyses"
-          history = subprocess.run([
-              "gh", "api", "--method", "GET", endpoint,
-              "-f", "ref=" + os.environ["GITHUB_REF"], "-f", "tool_name=CodeQL",
-          ], capture_output=True, text=True)
-
-          scan = True
-          if history.returncode == 0:
-              latest = next((entry for entry in json.loads(history.stdout)
-                             if entry["analysis_key"] == ".github/workflows/codeql.yml:analyze"), None)
-              if latest and not latest.get("error"):
-                  scanned = datetime.fromisoformat(latest["created_at"].replace("Z", "+00:00")).date()
-                  age_days = (datetime.now(timezone.utc).date() - scanned).days
-                  scan = latest["commit_sha"] != os.environ["GITHUB_SHA"] or age_days >= 7
-          else:
-              print("::warning::Could not read CodeQL history. Running a full scan.")
-
-          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
-              print(f"scan={str(scan).lower()}", file=output)
-
   analyze:
-    needs: check
-    if: ${{ !cancelled() && (github.event_name == 'workflow_dispatch' || needs.check.outputs.scan == 'true') }}
     runs-on: ubuntu-latest
     name: CodeQL Analysis
 
